@@ -37,7 +37,11 @@ export const PostDetails = React.memo<Props>(
       if (!commentId) {
         return;
       }
-      const originalComment: Comment | undefined = comments.find(comment => comment.id === commentId);
+
+      const originalComment: Comment | undefined = comments.find(
+        comment => comment.id === commentId,
+      );
+
       setComments(currentComments =>
         currentComments.filter(comment => comment.id !== commentId),
       );
@@ -47,6 +51,7 @@ export const PostDetails = React.memo<Props>(
         if (originalComment) {
           setComments(currentComments => [...currentComments, originalComment]);
         }
+
         setErrorDeleteComment(true);
       });
     }

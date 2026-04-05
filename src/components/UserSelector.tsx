@@ -17,12 +17,15 @@ export const UserSelector = React.memo<Props>(
       setIsActiveMenu(boolean => !boolean);
     }, []);
 
-    const handleItemMenu = useCallback((event: React.MouseEvent<HTMLAnchorElement>, user: User) => {
-      event.preventDefault();
-      onSelectedUser(user);
-      setIsActiveMenu(false);
-      setSelectedPost(null);
-    }, []);
+    const handleItemMenu = useCallback(
+      (event: React.MouseEvent<HTMLAnchorElement>, user: User) => {
+        event.preventDefault();
+        onSelectedUser(user);
+        setIsActiveMenu(false);
+        setSelectedPost(null);
+      },
+      [],
+    );
 
     const dropdown = useRef<HTMLDivElement>(null);
 
@@ -73,7 +76,7 @@ export const UserSelector = React.memo<Props>(
               <a
                 key={user.id}
                 href={`#${user.id}`}
-                onClick={(event) => handleItemMenu(event, user)}
+                onClick={event => handleItemMenu(event, user)}
                 className={classNames('dropdown-item', {
                   'is-active': selectedUser?.id === user.id,
                 })}
