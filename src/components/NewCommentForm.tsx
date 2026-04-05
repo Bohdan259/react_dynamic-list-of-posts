@@ -56,9 +56,9 @@ export const NewCommentForm = React.memo<Props>(
       (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        setErrorName(!name);
-        setErrorEmail(!email);
-        setErrorBody(!body);
+        setErrorName(!name.trim());
+        setErrorEmail(!email.trim());
+        setErrorBody(!body.trim());
 
         if (!name.trim() || !email.trim() || !body.trim()) {
           return;
