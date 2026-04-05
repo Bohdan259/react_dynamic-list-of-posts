@@ -20,7 +20,7 @@ export const PostsList = React.memo<Props>(
     onPostOpen,
     setIsOpenCommentForm,
   }) => {
-    const handdleOpenPost = useCallback(
+    const handleOpenPost = useCallback(
       (post: Post) => {
         if (selectedPost?.id === post.id && isOpenPost) {
           onPostOpen(false);
@@ -62,7 +62,7 @@ export const PostsList = React.memo<Props>(
                       'is-link': isOpenPost && selectedPost?.id === post.id,
                       'is-light': !isOpenPost || selectedPost?.id !== post.id,
                     })}
-                    onClick={() => handdleOpenPost(post)}
+                    onClick={() => handleOpenPost(post)}
                   >
                     {isOpenPost && selectedPost?.id === post.id
                       ? 'Close'

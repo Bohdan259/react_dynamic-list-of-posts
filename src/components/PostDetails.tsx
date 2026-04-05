@@ -31,20 +31,11 @@ export const PostDetails = React.memo<Props>(
     setComments,
     setIsOpenCommentForm,
   }) => {
-    const [selectedDeleteComment, setSelectedDeleteComment] = useState<
-      number | null
-    >(null);
     const [errorDeleteComment, setErrorDeleteComment] = useState(false);
-    const [newCommentData, setNewCommentData] = useState<CommentData | null>(
-      null,
-    );
     const [errorNewComment, setErrorNewComment] = useState(false);
     const [commentButtonLoading, setCommentButtonLoading] = useState(false);
 
-    const handleDeleteComment = useCallback((commentId: number) => {
-      setSelectedDeleteComment(commentId);
-    }, []);
-
+   
     const handleOpenNewCommentForm = useCallback(() => {
       setIsOpenCommentForm(true);
     }, []);
@@ -53,26 +44,17 @@ export const PostDetails = React.memo<Props>(
       if (!commentId) {
         return;
       }
-
-      setSelectedDeleteComment(null);
+      setComments(currentComments =>
+        currentComments.filter(comment => comment.id !== commentId),
+      );
       const commentIdString = String(commentId);
 
       deleteComment(commentIdString)
-        .then(() => {
-          setComments(currentComments =>
-            currentComments.filter(comment => comment.id !== commentId),
-          );
-        })
         .catch(() => {
+          setComments(comments)
           setErrorDeleteComment(true);
         });
     }
-
-    useEffect(() => {
-      if (selectedDeleteComment) {
-        deleteCommentById(selectedDeleteComment);
-      }
-    }, [selectedDeleteComment]);
 
     function addComment(newData: CommentData) {
       setCommentButtonLoading(true);
@@ -88,16 +70,8 @@ export const PostDetails = React.memo<Props>(
         });
     }
 
-    useEffect(() => {
-      if (newCommentData) {
-        addComment(newCommentData);
-        setNewCommentData(null);
-      }
-    }, [newCommentData]);
-
     return (
       <div className="content" data-cy="PostDetails">
-        <div className="content" data-cy="PostDetails">
           <div className="block">
             <h2 data-cy="PostTitle">
               {`#${selectedPost?.id}: ${selectedPost?.title}`}
@@ -144,7 +118,7 @@ export const PostDetails = React.memo<Props>(
                     type="button"
                     className="delete is-small"
                     aria-label="delete"
-                    onClick={() => handleDeleteComment(comment.id)}
+                    onClick={() => deleteCommentById(comment.id)}
                   >
                     delete button
                   </button>
@@ -179,10 +153,10 @@ export const PostDetails = React.memo<Props>(
               )}
           </div>
 
-          {isOpenCommentForm && !errorNewComment && (
+          {isOpenCommentForm && (
             <NewCommentForm
               commentButtonLoading={commentButtonLoading}
-              onSubmit={setNewCommentData}
+              onSubmit={addComment}
               selectedPost={selectedPost}
             />
           )}
@@ -193,7 +167,6 @@ export const PostDetails = React.memo<Props>(
             </div>
           )}
         </div>
-      </div>
     );
   },
 );

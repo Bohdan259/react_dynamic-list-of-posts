@@ -23,6 +23,7 @@ export const NewCommentForm = React.memo<Props>(
     const handleNameChange = useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
         setName(event.target.value);
+        setErrorName(false);
       },
       [],
     );
@@ -30,6 +31,7 @@ export const NewCommentForm = React.memo<Props>(
     const handleEmailChange = useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
+        setErrorEmail(false);
       },
       [],
     );
@@ -37,6 +39,7 @@ export const NewCommentForm = React.memo<Props>(
     const handleBodyChange = useCallback(
       (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setBody(event.target.value);
+        setErrorBody(false);
       },
       [],
     );
@@ -57,7 +60,7 @@ export const NewCommentForm = React.memo<Props>(
         setErrorEmail(!email);
         setErrorBody(!body);
 
-        if (!name || !email || !body) {
+        if (!name.trim() || !email.trim() || !body.trim()) {
           return;
         }
 
